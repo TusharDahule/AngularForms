@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form (ngSubmit)="onSubmit()" #f="ngForm"> <!-- This should send the data to server so didnt used action , Angular should handle this form-->
+        <!-- #f="ngForm" helps us to get access of javascript object -->
+        <div id="user-data" ngModelGroup="userData" #userData="ngModelGroup"> <!-- Angular creates Javascript object representing our form -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" class="form-control" ngModel
+            name="username"
+            required><!-- ngModel tells that this is control in our form and register in javascript object with its name attribute -->
+          </div>
+          <button class="btn btn-default" type="button" (click)="suggestUserName()">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input type="email" id="email" class="form-control" ngModel
+            name="email"
+            required
+            email
+            #email="ngModel"><!-- This exposes information that we can use to check validation and other things  -->
+            <span class="help-block" *ngIf="!email.valid && email.touched">Please enter valid email address !</span>
+          </div>
+        </div>
+        <p *ngIf="!userData.valid && userData.touched">User Details invalid !</p>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select id="secret" class="form-control" [ngModel]="defaultQuestion" name="secret"> <!-- [ngModel] is used here to  select default value & ng-reflect-model="default value" will be attached-->
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea name="questionAnswer" rows="3" class="form-control" [(ngModel)]="answer"></textarea><!-- Two way binding & to know its part of javascript object-->
+        </div>
+        <p>Your reply is : {{answer}}</p>
+        <div class="radio" *ngFor="let gender of genders">
+         <!--  <label for="gender"></label> -->
+          <input type="radio" name="gender" [value]="gender" ngModel>{{gender}}
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="!f.valid" >Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="row" *ngIf="submitted">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Username: {{user.username}}</p>
+      <p>Mail: {{user.email}}</p>
+      <p>Secret Question: Your first {{user.question}}?</p>
+      <p>Answer: {{user.answer}}</p>
+      <p>Gender: {{user.gender}}</p>
+    </div>
+  </div>
+</div>
